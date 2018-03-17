@@ -1565,7 +1565,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
         gridWidth = Drawing.crispRound(gd, ax.gridwidth, 1),
         zeroLineWidth = Drawing.crispRound(gd, ax.zerolinewidth, gridWidth),
         tickWidth = Drawing.crispRound(gd, ax.tickwidth, 1),
-        sides, transfn, tickpathfn, subplots,
+        sides, transfn, ticktransfn, tickpathfn, subplots,
         i;
 
     if(ax._counterangle && ax.ticks === 'outside') {
@@ -1582,7 +1582,11 @@ axes.doTicks = function(gd, axid, skipTitle) {
     if(axLetter === 'x') {
         sides = ['bottom', 'top'];
         transfn = ax._transfn || function(d) {
-            return 'translate(' + (ax._offset + ax.l2p(d.x)) + ',0)';
+            // return 'translate(' + (ax._offset + ax.l2p(d.x)) + ',0)';
+            return 'matrix(0.75,0,0,1,' + (ax._offset + ax.l2p(d.x)) + ',0)';
+        };
+        ticktransfn = function(d) {
+            return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
         };
         tickpathfn = function(shift, len) {
             if(ax._counterangle) {
@@ -1595,6 +1599,10 @@ axes.doTicks = function(gd, axid, skipTitle) {
     else if(axLetter === 'y') {
         sides = ['left', 'right'];
         transfn = ax._transfn || function(d) {
+            // return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
+            return 'matrix(0.75,0,0,1,10,' + (ax._offset + ax.l2p(d.x)) + ')';
+        };
+        ticktransfn = function(d) {
             return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
         };
         tickpathfn = function(shift, len) {
@@ -1653,7 +1661,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
                 .call(Color.stroke, ax.tickcolor)
                 .style('stroke-width', tickWidth + 'px')
                 .attr('d', tickpath);
-            ticks.attr('transform', transfn);
+            ticks.attr('transform', ticktransfn);
             ticks.exit().remove();
         }
         else ticks.remove();
