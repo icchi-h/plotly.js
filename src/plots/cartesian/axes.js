@@ -1311,7 +1311,8 @@ function numFormat(v, ax, fmtoverride, hover) {
             if(dp) v = v.substr(0, dp + tickRound).replace(/\.?0+$/, '');
         }
         // insert appropriate decimal point and thousands separator
-        v = Lib.numSeparate(v, ax._separators, separatethousands);
+        // disable this function for separatethousands option doesn't work
+        // v = Lib.numSeparate(v, ax._separators, separatethousands);
     }
 
     // add exponent
