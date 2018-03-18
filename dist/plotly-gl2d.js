@@ -28729,7 +28729,8 @@ axes.doTicks = function(gd, axid, skipTitle) {
 
     function drawTicks(container, tickpath) {
         var ticks = container.selectAll('path.' + tcls)
-            .data(ax.ticks === 'inside' ? valsClipped : vals, datafn);
+            // .data(ax.ticks === 'inside' ? valsClipped : vals, datafn);
+            .data(vals, datafn);
         if(tickpath && ax.ticks) {
             ticks.enter().append('path').classed(tcls, 1).classed('ticks', 1)
                 .classed('crisp', 1)
