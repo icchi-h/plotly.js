@@ -28673,7 +28673,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
                 return d.dy + d.fontSize * MID_SHIFT - labelShift * flipit;
             };
             labelx = function(d) {
-                return d.dx + position + (labelStandoff + pad +
+                return d.dx + (position / 0.75) - (d.fontSize * 0.75) + (labelStandoff + pad +
                     ((Math.abs(ax.tickangle) === 90) ? d.fontSize / 2 : 0)) * flipit;
             };
             labelanchor = function(angle) {
