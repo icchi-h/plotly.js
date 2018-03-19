@@ -28533,7 +28533,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
         gridWidth = _$drawing_68.crispRound(gd, ax.gridwidth, 1),
         zeroLineWidth = _$drawing_68.crispRound(gd, ax.zerolinewidth, gridWidth),
         tickWidth = _$drawing_68.crispRound(gd, ax.tickwidth, 1),
-        sides, transfn, ticktransfn, tickpathfn, subplots,
+        sides, transfn, labeltransfn, tickpathfn, subplots,
         i;
 
     if(ax._counterangle && ax.ticks === 'outside') {
@@ -28550,11 +28550,10 @@ axes.doTicks = function(gd, axid, skipTitle) {
     if(axLetter === 'x') {
         sides = ['bottom', 'top'];
         transfn = ax._transfn || function(d) {
-            // return 'translate(' + (ax._offset + ax.l2p(d.x)) + ',0)';
-            return 'matrix(0.75,0,0,1,' + (ax._offset + ax.l2p(d.x)) + ',0)';
+            return 'translate(' + (ax._offset + ax.l2p(d.x)) + ',0)';
         };
-        ticktransfn = function(d) {
-            return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
+        labeltransfn = ax._labeltransfn || function(d) {
+            return 'matrix(0.75,0,0,1,' + (ax._offset + ax.l2p(d.x)) + ',0)';
         };
         tickpathfn = function(shift, len) {
             if(ax._counterangle) {
@@ -28567,11 +28566,10 @@ axes.doTicks = function(gd, axid, skipTitle) {
     else if(axLetter === 'y') {
         sides = ['left', 'right'];
         transfn = ax._transfn || function(d) {
-            // return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
-            return 'matrix(0.75,0,0,1,10,' + (ax._offset + ax.l2p(d.x)) + ')';
-        };
-        ticktransfn = function(d) {
             return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
+        };
+        labeltransfn = ax._labeltransfn || function(d) {
+            return 'matrix(0.75,0,0,1,10,' + (ax._offset + ax.l2p(d.x)) + ')';
         };
         tickpathfn = function(shift, len) {
             if(ax._counterangle) {
@@ -28630,7 +28628,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
                 .call(_$color_43.stroke, ax.tickcolor)
                 .style('stroke-width', tickWidth + 'px')
                 .attr('d', tickpath);
-            ticks.attr('transform', ticktransfn);
+            ticks.attr('transform', transfn);
             ticks.exit().remove();
         }
         else ticks.remove();
@@ -28764,7 +28762,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
                 var anchor = labelanchor(angle, d);
                 var thisLabel = _$d3_7.select(this),
                     mathjaxGroup = thisLabel.select('.text-math-group'),
-                    transform = transfn.call(thisLabel.node(), d) +
+                    transform = labeltransfn.call(thisLabel.node(), d) +
                         ((_$fastIsnumeric_10(angle) && +angle !== 0) ?
                         (' rotate(' + angle + ',' + labelx(d) + ',' +
                             (labely(d) - d.fontSize / 2) + ')') :
