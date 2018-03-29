@@ -140,7 +140,7 @@ The `geo` partial bundle contains the `scatter`, `scattergeo` and `choropleth` t
 
 | Raw size | Minified size | Minified + gzip size |
 |------|-----------------|------------------------|
-| 2.1 MB | 707.8 kB | 238.7 kB |
+| 2.1 MB | 707.7 kB | 238.7 kB |
 
 ### plotly.js gl3d
 
@@ -212,7 +212,7 @@ The `finance` partial bundle contains the `scatter`, `bar`, `histogram`, `pie`, 
 
 | Raw size | Minified size | Minified + gzip size |
 |------|-----------------|------------------------|
-| 2.1 MB | 716.1 kB | 240.1 kB |
+| 2.1 MB | 716.1 kB | 240 kB |
 
 ----------------
 
