@@ -28658,7 +28658,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
     if(axLetter === 'x') {
         sides = ['bottom', 'top'];
         transfn = ax._transfn || function(d) {
-            return 'translate(' + (ax._offset + ax.l2p(d.x)) + ',0)';
+            return 'translate(' + (ax._offset + ax.l2p(d.x) - (ax.linewidth / 2)) + ',0)';
         };
         labeltransfn = ax._labeltransfn || function(d) {
             return 'matrix(0.75,0,0,1,' + (ax._offset + ax.l2p(d.x)) + ',0)';
@@ -28674,7 +28674,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
     else if(axLetter === 'y') {
         sides = ['left', 'right'];
         transfn = ax._transfn || function(d) {
-            return 'translate(0,' + (ax._offset + ax.l2p(d.x)) + ')';
+            return 'translate(' + -ax.linewidth + ',' + (ax._offset + ax.l2p(d.x) + (ax.tickwidth / 2)) + ')';
         };
         labeltransfn = ax._labeltransfn || function(d) {
             return 'matrix(0.75,0,0,1,10,' + (ax._offset + ax.l2p(d.x)) + ')';
@@ -28682,9 +28682,9 @@ axes.doTicks = function(gd, axid, skipTitle) {
         tickpathfn = function(shift, len) {
             if(ax._counterangle) {
                 var caRad = ax._counterangle * Math.PI / 180;
-                return 'M' + shift + ',0l' + (Math.cos(caRad) * len) + ',' + (-Math.sin(caRad) * len);
+                return 'M' + shift + ',0l' + (Math.cos(caRad) * (len + ax.linewidth)) + ',' + (-Math.sin(caRad) * (len + ax.linewidth));
             }
-            else return 'M' + shift + ',0h' + len;
+            else return 'M' + shift + ',0h' + (len + ax.linewidth);
         };
     }
     else if(axid === 'angular') {
