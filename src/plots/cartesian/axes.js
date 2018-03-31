@@ -1583,7 +1583,7 @@ axes.doTicks = function(gd, axid, skipTitle) {
     if(axLetter === 'x') {
         sides = ['bottom', 'top'];
         transfn = ax._transfn || function(d) {
-            return 'translate(' + (ax._offset + ax.l2p(d.x) - (ax.linewidth / 2)) + ',0)';
+            return 'translate(' + (ax._offset + ax.l2p(d.x) - (ax.linewidth / 2)) + ',' + ax.linewidth + ')';
         };
         labeltransfn = ax._labeltransfn || function(d) {
             return 'matrix(0.75,0,0,1,' + (ax._offset + ax.l2p(d.x)) + ',0)';
@@ -1591,9 +1591,9 @@ axes.doTicks = function(gd, axid, skipTitle) {
         tickpathfn = function(shift, len) {
             if(ax._counterangle) {
                 var caRad = ax._counterangle * Math.PI / 180;
-                return 'M0,' + shift + 'l' + (Math.sin(caRad) * len) + ',' + (Math.cos(caRad) * len);
+                return 'M0,' + shift + 'l' + (Math.sin(caRad) * (len - ax.linewidth)) + ',' + (Math.cos(caRad) * (len - ax.linewidth));
             }
-            else return 'M0,' + shift + 'v' + len;
+            else return 'M0,' + shift + 'v' + (len - ax.linewidth);
         };
     }
     else if(axLetter === 'y') {
